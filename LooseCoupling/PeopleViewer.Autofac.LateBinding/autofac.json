@@ -1,7 +1,8 @@
 {
+  "defaultAssembly": "PersonReader.Service",
   "components": [
     {
-      "type": "PersonReader.Service.ServiceReader, PersonReader.Service",
+      "type": "PersonReader.Service.ServiceReader",
       "services": [
         {
           "type": "Common.IPersonReader, Common"

@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using Autofac.Configuration;
-using Common;
 using Microsoft.Extensions.Configuration;
 using PeopleViewer.Presentation;
 using System;
+using System.Runtime.Loader;
 using System.Windows;
 
 namespace PeopleViewer.Autofac.LateBinding
@@ -22,10 +22,13 @@ namespace PeopleViewer.Autofac.LateBinding
 
         private void ConfigureContainer()
         {
-            var config = new ConfigurationBuilder();
-            config.AddJsonFile("autofac.json");
+            var configBuilder = new ConfigurationBuilder();
+            configBuilder.AddJsonFile("autofac.json");
 
-            var module = new ConfigurationModule(config.Build());
+            var configuration = configBuilder.Build();
+            LoadAssembly(configuration);
+
+            var module = new ConfigurationModule(configuration);
             var builder = new ContainerBuilder();
             builder.RegisterModule(module);
 
@@ -38,6 +41,18 @@ namespace PeopleViewer.Autofac.LateBinding
         private void ComposeObjects()
         {
             Application.Current.MainWindow = Container.Resolve<MainWindow>();
+        }
+
+        private static void LoadAssembly(IConfigurationRoot configuration)
+        {
+            // This is a helper method to load an assembly from the file system.
+            // With .NET Core, if the assembly is not loaded, Autofac cannot find
+            // it (not sure why). The same is true when using Type.GetType with
+            // a fully-qualified assembly name.
+            var section = configuration.GetSection("defaultAssembly");
+            var assemblyName = section.Value + ".dll";
+            var assemblyPath = AppDomain.CurrentDomain.BaseDirectory + assemblyName;
+            AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyPath);
         }
     }
 }

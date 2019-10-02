@@ -11,12 +11,11 @@
     <PackageReference Include="Autofac.Configuration" Version="4.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PeopleViewer.Presentation\PeopleViewer.Presentation.csproj" />
-    <ProjectReference Include="..\PersonReader.CSV\PersonReader.CSV.csproj" />
-    <ProjectReference Include="..\PersonReader.Service\PersonReader.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>
